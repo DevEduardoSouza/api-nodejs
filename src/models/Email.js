@@ -20,12 +20,15 @@ const emailSchema = new Schema({
   },
   name: {
     type: String,
+    default: "",
   },
   description: {
     type: String,
+    default: "",
   },
   profilePicture: {
     type: String,
+    default: "",
   },
   createdAt: {
     type: Date,
@@ -48,6 +51,7 @@ const emailSchema = new Schema({
   },
   soldAt: {
     type: Date,
+    default: null,
   },
 });
 
