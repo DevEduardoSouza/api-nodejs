@@ -26,10 +26,37 @@ const emailController = {
   getById: async (req, res) => {
     try {
       const id = req.params.id;
-      const emails = await Email.findById(id);
-      res.json(emails);
+      const email = await Email.findById(id);
+
+      if (!email) {
+        res.status(404).json({ msg: "Email não encontrado" });
+        return;
+      }
+
+      res.json(email);
     } catch (error) {
       console.log(`Error ao buscar o email: ${error}`);
+      res.status(404).json({ msg: "formato de ID não válido" });
+    }
+  },
+  deleteById: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const email = await Email.findById(id);
+
+      if (!email) {
+        res.status(404).json({ msg: "Email não encontrado" });
+        return;
+      }
+
+      const deletedEmail = await Email.findByIdAndDelete(id);
+
+      res
+        .status(200)
+        .json({ deletedEmail, msg: "email deletado  com sucesso" });
+    } catch (error) {
+      console.log(`Error ao buscar o email: ${error}`);
+      res.status(404).json({ msg: "formato de ID não válido" });
     }
   },
 };
