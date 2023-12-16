@@ -39,6 +39,22 @@ const emailController = {
       res.status(404).json({ msg: "formato de ID não válido" });
     }
   },
+  getByEmail: async (req, res) => {
+    try {
+      const userEmail = req.params.email;
+      const email = await Email.findOne({ email: userEmail });
+
+      if (!email) {
+        res.status(404).json({ msg: "Email não encontrado" });
+        return;
+      }
+
+      res.json(email);
+    } catch (error) {
+      console.log(`Error ao buscar o email: ${error}`);
+      res.status(500).json({ msg: "Erro interno do servidor" });
+    }
+  },
   deleteById: async (req, res) => {
     try {
       const id = req.params.id;
@@ -57,6 +73,27 @@ const emailController = {
     } catch (error) {
       console.log(`Error ao buscar o email: ${error}`);
       res.status(404).json({ msg: "formato de ID não válido" });
+    }
+  },
+  update: async (req, res) => {
+    try {
+      const id = req.params.id;
+
+      const email = {
+        email: req.body.email,
+        hashedPassword: req.body.hashedPassword,
+      };
+
+      const updatedEmail = await Email.findByIdAndUpdate(id, email);
+
+      if (!updatedEmail) {
+        res.status(404).json({ msg: "Email não encontrado" });
+        return;
+      }
+
+      res.status(200).json({ email, msg: "email atualizado com sucesso" });
+    } catch (error) {
+      console.log(error);
     }
   },
 };
